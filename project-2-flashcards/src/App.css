@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@200&display=swap');
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  font-family: 'Karla', sans-serif;
+}
+body
+{
+  background-color: ivory;
+}
+
+
+button {
+  color: red;
+  
+}
+
+
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
