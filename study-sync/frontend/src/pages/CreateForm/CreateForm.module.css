@@ -1,0 +1,24 @@
+/* CreateForm.module.css */
+.createFormContainer {
+    display: flex;
+    /* Adjust height as needed, possibly to '100vh' for full viewport height */
+  }
+  
+  .toolbox {
+    flex: 1; /* Adjust as needed */
+    background-color: #f7f7f7; /* Your desired color */
+    /* Add padding, margins, borders as necessary */
+  }
+  
+  .toolboxItem {
+    /* Styles for individual toolbox items */
+  }
+  
+  .formDraftArea {
+    flex: 3; /* Adjust as needed */
+    background-color: #ffffff; /* Your desired color */
+    /* Add padding, margins, borders as necessary */
+  }
+  
+  /* You can add additional styles for the toolbox and form draft items here */
+  

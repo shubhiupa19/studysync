@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './LoginPage.module.css'
 
 function isValidEmail (email) {
@@ -8,6 +9,10 @@ function isValidEmail (email) {
 }
 
 function LoginPage() {
+    const navigate = useNavigate();
+    function goToDashboard() {
+        navigate('/dashboard');
+    }
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -20,10 +25,14 @@ function LoginPage() {
         else {
             setEmailError('');
             console.log('Email:', email, 'Password:', password);
+
+            if (email && password) {
+                navigate('/dashboard');
         }
 
         //submit user data to backend
     }
+}
     return (
         <div className={styles.container}>
         <h1>Welcome Back!</h1>
@@ -58,7 +67,6 @@ function LoginPage() {
         </div>
     )
 }
-
 
 
 
