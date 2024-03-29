@@ -5,9 +5,10 @@
     background-color: #333;
     color: white;
     width: 100%;
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
+    top: 0;
+    padding: 0;
+    margin: 0;
   }
   
   .navLogo {
@@ -38,12 +39,11 @@
     color: #f0f0f0;
   }
   
-  /* Responsive design */
+   /* Responsive design */
   @media (max-width: 768px) {
     .navLinks {
       display: none; 
     }
-  
-  
-  }
+   
+   } 
   

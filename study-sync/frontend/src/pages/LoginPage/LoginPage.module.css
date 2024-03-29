@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    text-align: center;
     
 }
 
@@ -12,9 +13,7 @@ h1 {
 }
 
 input {
-    width: 80%;
-    max-width: 300px;
-    padding: 10px;
+    
     margin-bottom: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -28,9 +27,7 @@ input:focus {
 }
 
 button {
-    width: 84%; 
-    max-width: 306px; 
-    padding: 10px;
+    
     border: none;
     border-radius: 5px;
     background-color: #007bff;
