@@ -17,22 +17,43 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
 
-    function handleFormSubmit (e) {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (!isValidEmail(email)) {
             setEmailError('Please enter a valid email');
         } 
         else {
             setEmailError('');
-            console.log('Email:', email, 'Password:', password);
 
-            if (email && password) {
-                navigate('/dashboard');
+            try {
+                const response = await fetch('http://localhost:3000/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                    
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                console.log('Logged in user:', data);
+
+                goToDashboard();
+
+            } catch (error)
+            {
+                console.error('Login error:', error);
+            }
         }
 
         //submit user data to backend
     }
-}
+
     return (
         <div className={styles.container}>
         <h1>Welcome Back!</h1>
