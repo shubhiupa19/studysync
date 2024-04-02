@@ -6,6 +6,8 @@ const asyncHandler = require('express-async-handler');
 //Register a new user function
 exports.registerUser = asyncHandler(async (req, res) => {
     const { email, password, firstName, lastName } = req.body;
+
+    console.log(req.body);
     
     //just checks that all fields are filled out
     if (!email || !password || !firstName || !lastName) {

@@ -3,8 +3,14 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const formRoutes = require('./routes/formRoutes');
 const responseRoutes = require('./routes/responseRoutes');
+const cors = require('cors')
 require('dotenv').config();
+
 const app = express();
+
+app.use(cors());
+
+
 app.use(express.json());
 
 //connecting to the database
