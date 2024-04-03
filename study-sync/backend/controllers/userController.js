@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
+const jwt = require('jsonwebtoken');
 
 
 //Register a new user function
@@ -57,6 +58,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
 exports.loginUser = asyncHandler(async (req, res) => { 
 
     const { email, password } = req.body;
+    console.log("Credentials:", email, password)
 
     if (!email || !password) {
         res.status(400);
@@ -73,11 +75,14 @@ exports.loginUser = asyncHandler(async (req, res) => {
         const match = await bcrypt.compare(password, userExists.password);
         if (match) {
             res.status(200);
+           
+            const token = jwt.sign({ id: userExists._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
             res.json({
                 _id: userExists._id,
                 email: userExists.email,
                 firstName: userExists.firstName,
                 lastName: userExists.lastName,
+                token: token,
             });
         }
         else {

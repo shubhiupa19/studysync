@@ -1,10 +1,11 @@
 const express = require('express');
 const router = require('express').Router();
+const {protect} = require('../middleware/authMiddleware');
 const {createForm, getForms, getFormById, updateForm, deleteForm} = require('../controllers/formController');
 
 router.post('/create', createForm);
 
-router.get('/get', getForms);
+router.get('/get', protect, getForms);
 
 router.get('/get/:id', getFormById);
 
