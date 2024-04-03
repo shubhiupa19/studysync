@@ -41,6 +41,8 @@ function LoginPage() {
 
                 const data = await response.json();
 
+                localStorage.setItem('token', data.token);
+
                 console.log('Logged in user:', data);
 
                 goToDashboard();
@@ -51,7 +53,6 @@ function LoginPage() {
             }
         }
 
-        //submit user data to backend
     }
 
     return (

@@ -5,6 +5,14 @@
     padding: 20px;
 }
 
+form.title {
+    text-align: center;
+}
+
+h4 {
+    text-align: center;
+
+}
 
 .buttonContainer {
     display: flex;

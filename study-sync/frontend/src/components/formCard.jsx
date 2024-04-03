@@ -2,7 +2,9 @@ import React from "react";
 import { useNavigate } from 'react-router-dom'
 import styles from "./formCard.module.css";
 
-function FormCard(form) {
+function FormCard({form}) {
+   
+    console.log(form);
    
     const navigate = useNavigate();
 
@@ -17,11 +19,12 @@ function FormCard(form) {
         navigate('/responses');
     }
 
+
     return (
     <div className={styles.container}>
             <img src="https://via.placeholder.com/150" alt="Forme" />
-            <h3>Form Card</h3>
-            <h4>Description</h4>
+            <h3>{form.title}</h3>
+            <h4>{form.description}</h4>
             <div className = {styles.allButtons}>
                 
                 <div className={styles.buttonContainer}>
