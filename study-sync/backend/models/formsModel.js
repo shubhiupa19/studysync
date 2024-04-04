@@ -9,7 +9,7 @@ const questionSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['text', 'multiple-choice', 'time-interval', 'date-interval', 'other']
+        enum: ['text', 'radio', 'checkbox', 'dropdown', 'date', 'time', 'file', 'range', 'email', 'number', 'tel', 'url'],
     },
    options: [String],
 });
@@ -24,6 +24,10 @@ const formsSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+    },
+    published: {
+        type: Boolean,
+        default: false,
     },
     description: String,
     questions: [questionSchema]

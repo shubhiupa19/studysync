@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import FormCard from "../../components/formCard";
 import StudyGroup from "../../components/studyGroup";
 import StudySessionCard from "../../components/studySessionCard";
+
 import Navbar from "../../components/navbar";
 import styles from "./Dashboard.module.css";
 
@@ -12,13 +13,14 @@ function Dashboard() {
     const [studyGroupIndex, setStudyGroupIndex] = React.useState(0);
     const [forms, setForms] = useState([]);
     const studyGroups = [];
+   
 
 
     useEffect   (() => {
         const fetchForms = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch('http://localhost:3000/api/forms/get', {
+                const response = await fetch('/api/forms/get', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -76,6 +78,7 @@ function Dashboard() {
 
     return (
         <>
+      
         <Navbar create ={true} />
         <div className={styles.container}>
            
@@ -121,6 +124,8 @@ function Dashboard() {
                 </div>
             </div>
         </div>
+        
+        
         </>
     );
 }

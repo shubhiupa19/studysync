@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom'
+
 import styles from "./formCard.module.css";
 
 function FormCard({form}) {
-   
-    console.log(form);
-   
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState("");
+
+    const openModal = (content) => {
+        setModalContent(content);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
 
     function goToForm() {
-        navigate('/form');
+        navigate(`/edit/${form._id}`);
     }
     //generates a link to share with other people to fill out the form
     function share() {
-        console.log("share");
+        const shareContent = form.published
+        ? `Your form is published! Share this link: ${window.location.origin}/form/${form._id}`
+        : "This form hasn't been published yet.";
+        openModal(shareContent);
+        
     }
     function viewResponses() {
         navigate('/responses');
@@ -36,6 +50,17 @@ function FormCard({form}) {
                 <button onClick={viewResponses}>View Responses</button>
 
             </div>
+            {isModalOpen && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <span className={styles.close} onClick={closeModal}>&times;</span>
+                        <p>{modalContent}</p>
+                        {!form.published && (
+                            <button onClick={closeModal}>Close</button>
+                        )}
+                    </div>
+                </div>
+            )}
 
         </div>
     );

@@ -37,7 +37,9 @@ exports.createForm = asyncHandler(async (req, res) => {
 
 //gets all forms
 exports.getForms = asyncHandler(async (req, res) => {
+   
     const forms = await Form.find({creator_id: req.user._id});
+    
     res.status(200).json(forms);
 });
 
@@ -55,6 +57,8 @@ exports.getFormById = asyncHandler(async (req, res) => {
 //update form 
 exports.updateForm = asyncHandler(async (req, res) => {
 const form = await Form.findById(req.params.id);
+console.log("req.user._id", req.user._id);
+console.log("reached update form", form);
 if (form && form.creator_id.equals(req.user._id)) {
     form.title = req.body.title || form.title;
     form.description = req.body.description || form.description;
@@ -82,4 +86,18 @@ exports.deleteForm = asyncHandler(async (req, res) => {
         throw new Error('Form not found');
     }
 
+});
+
+//publish form
+exports.publishForm = asyncHandler(async (req, res) => {
+    const form = await Form.findById(req.params.id);
+
+    if (form && form.creator_id.equals(req.user._id)) {
+        form.published = true; // Set the published field to true
+        await form.save();
+        res.status(200).json({ message: 'Form published successfully' });
+    } else {
+        res.status(404);
+        throw new Error('Form not found');
+    }
 });

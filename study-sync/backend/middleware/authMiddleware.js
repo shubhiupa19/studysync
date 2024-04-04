@@ -10,6 +10,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     )
+    console.log(req.headers.authorization);
     {
         try {
             //getting token from header
