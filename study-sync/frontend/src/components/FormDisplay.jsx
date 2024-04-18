@@ -6,6 +6,36 @@ function FormDisplay () {
 
     const [formData, setFormData] = useState(null);
 
+    const [responses, setResponses] = useState({});
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/responses/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    form: formId,
+                    respondent: '660b90fe4a1ea9ad879ed40c',
+                    response_array: Object.entries(responses).map(([question, answer]) => ({
+                        question: question,
+                        response: answer
+                      }))
+                })
+
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+        
+        
+
+    }
+
     useEffect(() => {
         fetch(`http://localhost:3000/api/forms/get/${formId}`)
             .then(response => response.json())
@@ -21,11 +51,11 @@ function FormDisplay () {
         <div>
             <h2>{formData.title}</h2>
             <p>{formData.description}</p>
-            <form>
+            <form onSubmit={handleSubmit}>
                 {formData.questions.map((question, index) => (
                     <div key = {index}>
                         <label>{question.questionText}</label>
-                        {question.type === 'text' && <input type = "text" />}
+                        {question.type === 'text' && <input type = "text" onChange = {(event) => setResponses((prevResponses => ({ ...prevResponses, [question._id]: event.target.value})))}/>}
                         {question.type === 'radio' && question.options.map((option, index) => (
                             <div key = {index}>
                                 <input type = "radio" name = {question.questionText} value = {option} />

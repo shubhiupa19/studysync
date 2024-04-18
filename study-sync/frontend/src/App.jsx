@@ -5,6 +5,7 @@ import SignupPage from './pages/SignupPage/SignupPage'
 import Dashboard from './pages/Dashboard/Dashboard'
 import CreateForm from './pages/CreateForm/CreateForm'
 import FormDisplay from './components/FormDisplay'
+import ViewResponses from './components/viewResponses'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 
@@ -21,6 +22,7 @@ function App() {
           <Route path = "/create" element = {<CreateForm />} />
           <Route path="/edit/:formId" element={<CreateForm />} />
           <Route path="/form/:formId" element={<FormDisplay />} />
+          <Route path="responses/:formId" element = {<ViewResponses />} />
         </Routes>
 
       </Router>

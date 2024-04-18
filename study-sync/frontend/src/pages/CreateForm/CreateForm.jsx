@@ -4,8 +4,14 @@
         import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
         import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         import { faClone, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+        import { Box, TextField, Button, Paper, IconButton, Typography, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material';
+        import CloseIcon from '@mui/icons-material/Close';
+        import CopyIcon from '@mui/icons-material/ContentCopy';
+        import DeleteIcon from '@mui/icons-material/Delete';
+        import CloneIcon from '@mui/icons-material/FileCopy';
         import styles from './CreateForm.module.css';
         import PreviewForm from '../PreviewForm/PreviewForm';
+        import { v4 as uuidv4 } from 'uuid';
     
 
         function CreateForm() {
@@ -340,18 +346,30 @@
                 else if (source.droppableId === 'toolbox' && destination.droppableId === 'formDraft') {
                     const itemToAdd = items[source.index];
 
-                    const uniqueId = `${itemToAdd.type}-${Date.now()}`;
+                    console.log('item to add, calling add question', itemToAdd);
 
+                    handleAddQuestion(itemToAdd);
 
-                    setFormDraft((prevDraft) => ({
-
-                        ...prevDraft,
-
-                        questions: [...prevDraft.questions, { id: uniqueId, name: `question-${prevDraft.questions.length}`, type: itemToAdd.type, title: '', options: [] }],
-
-                    }));
+                    
                 }
             };
+
+            const handleAddQuestion = (itemToAdd) => {
+                
+                const uniqueId = uuidv4();
+                setFormDraft(prevDraft => {
+                    const newQuestions = [
+                        ...prevDraft.questions,
+                        { id: uniqueId, type: itemToAdd.type, title: '', options: [] }
+                    ];
+                    console.log('formDraft', newQuestions);
+                    return {...prevDraft, questions: newQuestions};
+                });
+                
+                
+            };
+
+            
 
             const reorderItemsWithinDroppable = (items, startIndex, endIndex) => {
                 const result = Array.from(items);
@@ -428,7 +446,8 @@
                                                 />
                                                 </div>
                                                 {formDraft.questions.map((question, index) => (
-                                                    <Draggable key={question._id} draggableId={question._id} index={index}>
+                                                    <Draggable key={question.id} draggableId={question.id} index={index}>
+                                                        
                                                         {(provided) => (
                                                             <div
                                                                 className={styles.question}
@@ -440,7 +459,8 @@
                                                             <div className={styles.questionContent}>
 
                                                                 {/* <h3>{question.title}</h3> */}
-                                                                <h3> question id: {question._id} </h3>
+                                                                <h3> question id: {question.id} </h3>
+                                                                <h3> question index: {index}</h3>
                                                                 <input
                                                                     type="text"
                                                                     placeholder="Question Title"

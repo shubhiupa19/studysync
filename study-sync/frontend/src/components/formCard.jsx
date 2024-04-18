@@ -30,7 +30,7 @@ function FormCard({form}) {
         
     }
     function viewResponses() {
-        navigate('/responses');
+        navigate(`/responses/${form._id}`);
     }
 
 

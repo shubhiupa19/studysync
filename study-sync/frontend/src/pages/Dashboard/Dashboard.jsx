@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { Box, Grid, Typography, Card, Button } from "@mui/material";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
+
 import FormCard from "../../components/formCard";
 import StudyGroup from "../../components/studyGroup";
 import StudySessionCard from "../../components/studySessionCard";
 
 import Navbar from "../../components/navbar";
-import styles from "./Dashboard.module.css";
+
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -80,18 +85,44 @@ function Dashboard() {
         <>
       
         <Navbar create ={true} />
-        <div className={styles.container}>
+        <Box sx={{flexGrow: 1, padding: 3}}>
            
-            <h1>Dashboard</h1>
-            <p>Welcome to your dashboard. Here you can create and share forms, view study groups, and more.</p>
-            <div className={styles.sectionsContainer}>
-                <div className={styles.formsSection}>
-                
-                    <div className = {styles.formNav}>
-                    <button onClick={goToPrevForm}>&lt;</button>
+            <Typography variant="h1" gutterBottom sx={{ textAlign: 'center'}} >Dashboard </Typography>
+            <Typography variant = "body1" sx={{ textAlign: 'center', width: '100%', mb: '20px' }}>Welcome to your dashboard. Here you can create and share forms, view study groups, and more.</Typography>
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={4}>
+                <Card variant="outlined">
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 2, paddingTop: '20px' }}>
+                <Button
+                    sx={{
+                        
+                        minWidth: 'auto', 
+                        width: theme => theme.spacing(4), 
+                        height: theme => theme.spacing(4),
+                        '& .MuiTouchRipple-root': {
+                        width: '100%', 
+                        height: '100%', 
+                     },
+                    }}
+                onClick={goToPrevForm}>
+                <ArrowBackIosIcon fontSize="small" />
+                </Button>
                     <h2>My Forms</h2>
-                    <button onClick={goToNextForm}>&gt;</button>
-                    </div>
+                    <Button
+                    sx={{
+                        padding: 0, 
+                         minWidth: 'auto', 
+                        width: theme => theme.spacing(4), 
+                        height: theme => theme.spacing(4), 
+                        '& .MuiTouchRipple-root': { 
+                        width: '100%', 
+                        height: '100%', 
+                     },
+                    }}
+                onClick={goToNextForm}>
+                <ArrowForwardIosIcon fontSize="small" />
+                </Button>
+                </Box>
                     
                     
                     {forms.length > 0 ? (
@@ -103,27 +134,61 @@ function Dashboard() {
                             <p>No forms available. Please create one.</p>
                         
                         )}
-                   
-                </div>
-                <div className={styles.studyGroupsSection}>
-                    <div className = {styles.studyGroupNav}>
-                    <button onClick={goToPrevStudyGroup}>&lt;</button>
+                   </Card>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                <Card variant="outlined">
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 2 }}> 
+                <Button
+                    sx={{
+                        
+                        minWidth: 'auto', 
+                        width: theme => theme.spacing(4), 
+                        height: theme => theme.spacing(4),
+                        '& .MuiTouchRipple-root': {
+                        width: '100%', 
+                        height: '100%', 
+                     },
+                    }}
+                onClick={goToPrevStudyGroup}>
+                <ArrowBackIosIcon fontSize="small" />
+                </Button>
                     <h2>My Study Groups</h2>
-                    <button onClick={goToNextStudyGroup}>&gt;</button>
-                    </div>
+                    <Button
+                    sx={{
+                        
+                        minWidth: 'auto', 
+                        width: theme => theme.spacing(4), 
+                        height: theme => theme.spacing(4),
+                        '& .MuiTouchRipple-root': {
+                        width: '100%', 
+                        height: '100%', 
+                     },
+                    }}
+                onClick={goToNextStudyGroup}>
+                <ArrowForwardIosIcon fontSize="small" />
+                </Button>
+                    </Box>
+                    <Box sx={{ padding: 2, width: '90%' }}>
                     <StudyGroup studyGroup = {studyGroups[studyGroupIndex]} />
+                    </Box>
+                </Card>
                    
                  
                    
-                </div>
-                <div className={styles.upcomingSessionsSection}>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                <Card variant="outlined">
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 2 }}>
                     <h2>Upcoming Study Sessions</h2>
                     <StudySessionCard />
+                    </Box>
+                </Card>
                     
                     
-                </div>
-            </div>
-        </div>
+                </Grid>
+            </Grid>
+        </Box>
         
         
         </>
