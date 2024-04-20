@@ -11,6 +11,7 @@
         import CloneIcon from '@mui/icons-material/FileCopy';
         import styles from './CreateForm.module.css';
         import PreviewForm from '../PreviewForm/PreviewForm';
+        import question from '../../components/question';
         import { v4 as uuidv4 } from 'uuid';
     
 
@@ -290,6 +291,7 @@
             };
 
             const handleDeleteQuestion = (index) => {
+                
                 const updatedQuestions = [...formDraft.questions];
                 updatedQuestions.splice(index, 1);
                 setFormDraft({ ...formDraft, questions: updatedQuestions });
@@ -450,30 +452,20 @@
                                                         
                                                         {(provided) => (
                                                             <div
-                                                                className={styles.question}
                                                                 ref={provided.innerRef}
                                                                 {...provided.draggableProps}
                                                                 {...provided.dragHandleProps}
+                                                                
                                                             >
                                                             
-                                                            <div className={styles.questionContent}>
-
-                                                                {/* <h3>{question.title}</h3> */}
-                                                                <h3> question id: {question.id} </h3>
-                                                                <h3> question index: {index}</h3>
-                                                                <input
-                                                                    type="text"
-                                                                    placeholder="Question Title"
-                                                                    value={question.title}
-                                                                    onChange={(e) => handleQuestionTitleChange(e.target.value, index)}
-                                                                />
-                                                                {renderQuestionInputType(question, index)}
-                                                            </div>
-                                                        
-                                                            <div className={styles.questionActions}>
-                                                                <button onClick={() => handleDuplicateQuestion(index)}><FontAwesomeIcon icon={faClone} /> </button>
-                                                            <button onClick={() => handleDeleteQuestion(index)}><FontAwesomeIcon icon={faTrashAlt} /></button>
-                                                            </div>
+                                                            <question
+                                                        key={question.id}
+                                                        question={question}
+                                                        index={index}
+                                                        handleDeleteQuestion={handleDeleteQuestion}
+                                                        handleDuplicateQuestion={handleDuplicateQuestion}
+                                                       
+                                                        />
                                                         
                                                             </div>
                                                         )}

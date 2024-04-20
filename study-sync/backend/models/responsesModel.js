@@ -9,7 +9,11 @@ const responseSchema = new mongoose.Schema({
   respondent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false
+  },
+  anonymousRespondent: {
+    type: 'String',
+    required: false
   },
   response_array: [{
     question: {

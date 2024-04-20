@@ -1,3 +1,4 @@
+const { type } = require('express/lib/response');
 const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
@@ -30,7 +31,7 @@ const formsSchema = new mongoose.Schema({
         default: false,
     },
     description: String,
-    questions: [questionSchema]
+    questions: [questionSchema],
 });
 
 const Forms = mongoose.model('Forms', formsSchema);

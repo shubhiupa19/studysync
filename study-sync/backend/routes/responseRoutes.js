@@ -1,15 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const { createResponse, getResponsesbyForm, getResponseByID, updateResponse, deleteResponse} = require('../controllers/responsesController');
+    const express = require('express');
+    const router = express.Router();
+    const { createResponse, getResponsesbyForm, getResponseByID, updateResponse, deleteResponse} = require('../controllers/responsesController');
 
-router.post('/create', createResponse);
+    router.post('/create', createResponse);
 
-router.get('/get/:formId', getResponsesbyForm);
+    router.get('/get/:formId', getResponsesbyForm);
 
-router.get('/get/:id', getResponseByID);
+    router.get('/get/:id', getResponseByID);
 
-router.put('/update/:id', updateResponse);
+    router.put('/update/:id', updateResponse);
 
-router.delete('/delete/:id', deleteResponse);
+    router.delete('/delete/:id', deleteResponse);
 
-module.exports = router;
+    module.exports = router;
