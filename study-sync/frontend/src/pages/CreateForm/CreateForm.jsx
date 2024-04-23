@@ -194,8 +194,39 @@
             };
 
             const handlePublish = async () => {
+                let currentFormId = formId;
+                //if the form hasn't been created yet, call the create form endpoint
+                if (!formId){
+                    const token = localStorage.getItem('token');
+                    const url = 'http://localhost:3000/api/forms/create';
+                    const method = 'POST';
+                    const formToSave = {
+                        ...formDraft,
+                        questions: formDraft.questions.map(q => ({
+                            ...q,
+                            questionText: q.title,
+                        })),
+                    };
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify(formToSave),
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to create form');
+                    }
+                    const data = await response.json();
+                    currentFormId = data._id;
+                    console.log('Form created:', data);
+                     console.log('Form ID:', currentFormId);
+
+                }
+                //otherwise, go straight to the publish endpoint
                 try {
-                    const response = await fetch(`http://localhost:3000/api/forms/publish/${formId}`, {
+                    const response = await fetch(`http://localhost:3000/api/forms/publish/${currentFormId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -206,7 +237,7 @@
                 if (!response.ok) {
                     throw new Error('Failed to publish form');
                 }
-                const formLink = `${window.location.origin}/form/${formId}`;
+                const formLink = `${window.location.origin}/form/${currentFormId}`;
                 setFormLink(formLink);
                 setShowModal(true);
 
