@@ -1,36 +1,58 @@
 
 import React from 'react';
-import { Card, CardContent, Typography, TextField, IconButton } from '@mui/material';
+import { Card, CardHeader, CardContent, Typography, TextField, IconButton, Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
-function question({ question, index, handleDeleteQuestion, handleEditQuestion }) {
+function Question({ question, index, handleDeleteQuestion, handleDuplicateQuestion, handleQuestionTitleChange, handleOptionChange, handleAddOption, handleRemoveOption, renderQuestionInputType}) {
     return (
         <Card raised>
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    Question {index + 1}
-                </Typography>
+            <CardHeader
+            action={
+                <>
+                        
+                        <IconButton onClick={() => handleDuplicateQuestion(index)} size="small" color="primary">
+                            <FileCopyIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDeleteQuestion(index)} size = "small" color="error">
+                            <DeleteIcon />
+                        </IconButton>
+                        
+
+                </>
+               
+            }
+                title={
+                <>
+                <Box display="flex" alignItems="center" gap={1}>
+                <Typography variant="subtitle1">{index + 1}.</Typography>
                 <TextField
-                    fullWidth
-                    label="Question Title"
-                    variant="outlined"
-                    value={question.title}
-                    onChange={(e) => handleQuestionChange(e.target.value, index)}
-                    margin="normal"
+                fullWidth
+                label="Question Title"
+                variant="outlined"
+                value={question.title}
+                onChange={(e) => handleQuestionTitleChange(e.target.value, index)}
                 />
-                {/* Assuming renderQuestionInputType is passed and handles rendering different input types */}
+                </Box>
+                </>
+                }
+                
+                
+                style={{ paddingBottom: 0 }}
+            />
+                 <CardContent style={{ paddingTop: 0}}>
+                
+
+               
                 <div style={{ marginTop: 16 }}>
-                    <IconButton onClick={() => handleDeleteQuestion(index)} color="error">
-                        <DeleteIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleEditQuestion(index)} color="primary">
-                        <EditIcon />
-                    </IconButton>
+                {renderQuestionInputType(question, index)}
+
                 </div>
             </CardContent>
         </Card>
     );
 }
 
-export default question;
+export default Question;

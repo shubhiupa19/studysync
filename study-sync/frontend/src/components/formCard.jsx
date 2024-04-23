@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 
 import styles from "./formCard.module.css";
 
@@ -50,17 +55,16 @@ function FormCard({form}) {
                 <button onClick={viewResponses}>View Responses</button>
 
             </div>
-            {isModalOpen && (
-                <div className={styles.modal}>
-                    <div className={styles.modalContent}>
-                        <span className={styles.close} onClick={closeModal}>&times;</span>
-                        <p>{modalContent}</p>
-                        {!form.published && (
-                            <button onClick={closeModal}>Close</button>
-                        )}
-                    </div>
-                </div>
-            )}
+            <Dialog open={isModalOpen} onClose={closeModal}>
+                <DialogTitle>Share Form</DialogTitle>
+                <DialogContent>
+                    <p>{modalContent}</p>
+                </DialogContent>
+                <DialogActions>
+                    <Button sx= {{ width: '75px'}}onClick={closeModal}>Close</Button>
+                </DialogActions>
+
+                </Dialog>
 
         </div>
     );

@@ -11,7 +11,7 @@
         import CloneIcon from '@mui/icons-material/FileCopy';
         import styles from './CreateForm.module.css';
         import PreviewForm from '../PreviewForm/PreviewForm';
-        import question from '../../components/question';
+        import Question from '../../components/question';
         import { v4 as uuidv4 } from 'uuid';
     
 
@@ -218,16 +218,27 @@
 
             const handleSaveDraft = () => {
                 const token = localStorage.getItem('token');
-                console.log("token", token)
-                fetch(`http://localhost:3000/api/forms/update/${formId}`, {
-                    method: 'PUT',
+                const url = formId ? `http://localhost:3000/api/forms/update/${formId}` : 'http://localhost:3000/api/forms/create';
+                const method = formId ? 'PUT' : 'POST';
+               
+                const formToSave = {
+                    ...formDraft,
+                    questions: formDraft.questions.map(q =>({
+
+                        ...q,
+                        questionText: q.title,
+                    })),
+                };
+
+                fetch(url, {    
+                    method: method,
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(formDraft),
+                    body: JSON.stringify(formToSave),
                 })
-                .then((response) => {   
+                .then((response) => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -235,16 +246,18 @@
                 })
                 .then((data) => {
                     console.log('Form saved:', data);
-
+                    
                     navigate('/dashboard');
                 })
                 .catch(error => {
-
                     console.error('Error saving form:', error);
+
                 });
 
-            };
+                }
 
+
+    
 
             const handleRatingChange = (event, questionIndex) => {
                 const rating = event.target.value;
@@ -458,12 +471,17 @@
                                                                 
                                                             >
                                                             
-                                                            <question
+                                                            <Question
                                                         key={question.id}
                                                         question={question}
                                                         index={index}
                                                         handleDeleteQuestion={handleDeleteQuestion}
                                                         handleDuplicateQuestion={handleDuplicateQuestion}
+                                                        handleQuestionTitleChange={handleQuestionTitleChange}
+                                                        handleOptionChange={handleOptionChange}
+                                                        handleAddOption={handleAddOption}
+                                                        handleRemoveOption={handleRemoveOption}
+                                                        renderQuestionInputType={renderQuestionInputType}
                                                        
                                                         />
                                                         
