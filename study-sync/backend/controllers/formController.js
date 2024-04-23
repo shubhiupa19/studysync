@@ -1,13 +1,32 @@
 const Form = require('../models/formsModel');
 const asyncHandler = require('express-async-handler');
+const jwt = require('jsonwebtoken');
 
 //create a new form 
 exports.createForm = asyncHandler(async (req, res) => {
-    const { title, description, questions, creator_id } = req.body;
+    const { title, description, questions} = req.body;
+
+    const token = req.headers.authorization.split(' ')[1];
+    if(!token) {
+        res.status(401);
+        throw new Error('Not authorized');
+
+    }
+
+    let decoded;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        res.status(401);
+        throw new Error('Not authorized, token failed');
+    }
+
+    const creator_id = decoded.id;
     
     //just checks that all fields are filled out
-    if (!title || !questions || !creator_id) {
+    if (!title || !questions) {
         res.status(400);
+        console.log("creataor_id", creator_id);
         throw new Error('Please add all fields');
       }
 
