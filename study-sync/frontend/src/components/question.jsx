@@ -8,7 +8,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 function Question({ question, index, handleDeleteQuestion, handleDuplicateQuestion, handleQuestionTitleChange, handleOptionChange, handleAddOption, handleRemoveOption, renderQuestionInputType}) {
     return (
-        <Card raised>
+        <Card raised sx = {{ margin: '20px' }}>
             <CardHeader
             action={
                 <>

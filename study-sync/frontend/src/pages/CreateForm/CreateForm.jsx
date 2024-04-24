@@ -4,7 +4,7 @@
         import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
         import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         import { faClone, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-        import { Box, TextField, Button, Paper, IconButton, Typography, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material';
+        import { Box, TextField, Button, Paper, IconButton, Typography, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Checkbox, FormControlLabel, Radio, RadioGroup, FormControl, FormLabel, Select, MenuItem} from '@mui/material';
         import CloseIcon from '@mui/icons-material/Close';
         import CopyIcon from '@mui/icons-material/ContentCopy';
         import DeleteIcon from '@mui/icons-material/Delete';
@@ -84,51 +84,77 @@
             const renderQuestionInputType = (question, questionIndex) => {
                 switch (question.type) {
                     case 'text':
-                        return <input type="text" placeholder="Text" />;
-                    case 'checkbox':
                         return (
-                            <div>
+                            <TextField
+                              type="text"
+                              placeholder="Answer"
+                              fullWidth
+                              margin="normal"
+                              variant="outlined"
+                            />
+                          );
+                        case 'checkbox':
+                            return (
+                              <div>
                                 {question.options.map((option, optionIndex) => (
-                                    <div key={optionIndex}>
-                                        <input 
-                                            type="checkbox" 
-                                            id={`question-${questionIndex}-option-${optionIndex}`} 
+                                  <div key={optionIndex} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                    
+                                        <Checkbox
+                                          id={`question-${questionIndex}-option-${optionIndex}`} 
+                                          style={{ marginRight: '8px' }}
                                         />
-                                        <input 
-                                            type="text" 
-                                            value={option} 
-                                            onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)} 
+                                      
+                                        <TextField 
+                                          fullWidth
+                                          value={option} 
+                                          onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)} 
+                                          variant="outlined"
+                                          size="small"
+                                          placeholder = "New Option"
+                                          style={{ marginLeft: '8px', marginRight: '8px', flexGrow: 1 }} 
                                         />
-                                        <button onClick={() => handleRemoveOption(questionIndex, optionIndex)}>
-                                            Remove
-                                        </button>
-                                    </div>
+
+                                    <IconButton onClick={() => handleRemoveOption(questionIndex, optionIndex)} size="small" color="error" style = {{ width: '32px', height: '32px', '&:hover': { width: '32px', height: '32px'}, }}>
+                                      <DeleteIcon />
+                                    </IconButton>
+                                  </div>
                                 ))}
-                                <button onClick={() => handleAddOption(questionIndex)}>Add Option</button>
-                            </div>
-                        );
+                                <Button onClick={() => handleAddOption(questionIndex)} variant="contained" color="primary" style={{ marginTop: '8px' }}>
+                                  Add Option
+                                </Button>
+                              </div>
+                            );
+                          
                     case 'radio':
                         return (
                             <div>
-                                {question.options.map((option, optionIndex) => (
-                                    <div key={optionIndex}>
-                                        <input 
-                                            type="radio" 
-                                            name={`question-${questionIndex}`} 
-                                            id={`question-${questionIndex}-option-${optionIndex}`} 
-                                        />
-                                        <input 
-                                            type="text" 
-                                            value={option} 
-                                            onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)} 
-                                        />
-                                        <button onClick={() => handleRemoveOption(questionIndex, optionIndex)}>
-                                            Remove
-                                        </button>
-                                    </div>
-                                ))}
-                                <button onClick={() => handleAddOption(questionIndex)}>Add Option</button>
-                            </div>
+                            {question.options.map((option, optionIndex) => (
+                              <div key={optionIndex} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                
+                                    <Radio
+                                      id={`question-${questionIndex}-option-${optionIndex}`} 
+                                      style={{ marginRight: '8px' }}
+                                    />
+                                  
+                                    <TextField 
+                                      fullWidth
+                                      value={option} 
+                                      onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)} 
+                                      variant="outlined"
+                                      size="small"
+                                      placeholder = "New Option"
+                                      style={{ marginLeft: '8px', marginRight: '8px', flexGrow: 1 }} 
+                                    />
+
+                                <IconButton onClick={() => handleRemoveOption(questionIndex, optionIndex)} size="small" color="error" style = {{ width: '32px', height: '32px', '&:hover': { width: '32px', height: '32px'}, }}>
+                                  <DeleteIcon />
+                                </IconButton>
+                              </div>
+                            ))}
+                            <Button onClick={() => handleAddOption(questionIndex)} variant="contained" color="primary" style={{ marginTop: '8px' }}>
+                              Add Option
+                            </Button>
+                          </div>
                         );
                     
                     case 'dropdown':
@@ -350,7 +376,7 @@
             
             const handleAddOption = (questionIndex) => {
                 const updatedQuestions = [...formDraft.questions];
-                updatedQuestions[questionIndex].options.push('New Option');
+                updatedQuestions[questionIndex].options.push('');
                 setFormDraft({ ...formDraft, questions: updatedQuestions });
             };
             
@@ -369,12 +395,6 @@
                     return;
                 }
 
-                // const questionType = source.draggableId;
-                // const newQuestion = { id: questionType, type: questionType, title: '', options: [] };
-                // setFormDraft((prevDraft) => ({
-                //     ...prevDraft,
-                //     questions: [...prevDraft.questions, newQuestion],
-                // }));
 
                 if (source.droppableId === destination.droppableId) {
                         if (source.droppableId === 'toolbox') 
@@ -443,7 +463,7 @@
             return (
                 <>
                     <Navbar create={false} />
-                    <div className="container">
+                    <Box sx={{padding: 3}}>
                         <DragDropContext onDragEnd={onDragEnd}>
                             <div className={styles.dragDropContainer}>
                                 <Droppable droppableId="toolbox">
@@ -470,11 +490,11 @@
                                 </Droppable>
                                 <div className={styles.formDraftContainer}>
                                     <Droppable droppableId="formDraft">
-                                        {(provided) => (
+                                        {(provided, snapshot) => (
                                             <div
                                                 {...provided.droppableProps}
                                                 ref={provided.innerRef}
-                                                className={styles.formDraft}
+                                                className={snapshot.isDraggingOver ? styles.formDraftHover : styles.formDraft}
                                             >
                                                 <div className={styles.formDraftHeader}>
                                                 <input
@@ -491,8 +511,9 @@
                                                     onChange={handleFormDescriptionChange}
                                                 />
                                                 </div>
+                                                <div className={styles.formDraftQuestions}>
                                                 {formDraft.questions.map((question, index) => (
-                                                    <Draggable key={question.id} draggableId={question.id} index={index}>
+                                                    <Draggable key={question.id} draggableId={String(question.id)} index={index}>
                                                         
                                                         {(provided) => (
                                                             <div
@@ -509,9 +530,6 @@
                                                         handleDeleteQuestion={handleDeleteQuestion}
                                                         handleDuplicateQuestion={handleDuplicateQuestion}
                                                         handleQuestionTitleChange={handleQuestionTitleChange}
-                                                        handleOptionChange={handleOptionChange}
-                                                        handleAddOption={handleAddOption}
-                                                        handleRemoveOption={handleRemoveOption}
                                                         renderQuestionInputType={renderQuestionInputType}
                                                        
                                                         />
@@ -521,7 +539,14 @@
                                                         
                                                     </Draggable>
                                                 ))}
-                                                <button onClick={handlePreview}>Preview</button>
+                                               
+                                                {provided.placeholder}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                    <div className={styles.buttonContainer}>
+                                    <button className = {styles.smallButton} onClick={handlePreview}>Preview</button>
                                                 
                                                 {isPreviewing && (
                                                     
@@ -530,26 +555,23 @@
                                                     onClose={() => setIsPreviewing(false)} 
                                                     />
                                                 )}
-                                                <button onClick={handlePublish}>Publish</button>
+                                                <button className={styles.smallButton} onClick={handlePublish}>Publish</button>
                                                 {showModal && (
                                                     <div className={styles.modal}>
                                                         <div className={styles.modalContent}>
                                                             <span className={styles.close} onClick={() => setShowModal(false)}>&times;</span>
-                                                                <p>Your form is published! Share this link:</p>
+                                                                <p>Your form has been published! Share this link: </p>
                                                                     <input type="text" value={formLink} readOnly />
                                                                         <button onClick={() => navigator.clipboard.writeText(formLink)}>Copy Link</button>
                                                         </div>
                                                     </div>
-        )}
-                                                <button onClick={handleSaveDraft}>Save as Draft</button>
-                                                {provided.placeholder}
-                                            </div>
-                                        )}
-                                    </Droppable>
+                                                )}
+                                                <button className={styles.smallButton} onClick={handleSaveDraft}>Save as Draft</button>
+                                    </div>
                                 </div>
                             </div>
                         </DragDropContext>
-                    </div>
+                    </Box>
                 </>
             );
         }

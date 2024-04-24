@@ -29,23 +29,24 @@
 
 .formDraftContainer {
     display: flex;
-    align-items: flex-start; /* Align items at the top */
-    margin-left: 40px; /* Adjust margin */
-    padding-top: 20px; /* Add some top padding */
-    overflow-x: auto; /* Enable horizontal scrolling */
-    max-height: 85vh; /* Limit the height */
+    margin-left: 40px; 
+    padding-top: 20px; 
+    max-height: 85vh; 
     background-color: gray;
     width: 65%;
     border-radius: 10px;
+    justify-content: center;
     
 }
 
 .formDraft {
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap */
-    gap: 20px; /* Add some gap between items */
+    flex-direction: column; 
+    gap: 20px;
     padding: 20px; 
+    overflow-x: auto;
 }
+
 
 .formDraftHeader {
     display: flex;
@@ -53,34 +54,6 @@
     gap: 10px;
     
 }
-
-.question {
-    position: relative;
-    background-color: lightblue; /* Background color for each question */
-    padding: 10px;
-    border-radius: 8px;
-    width: calc(50% - 20px); /* Make each question take up 50% width with some gap */
-    min-width: 200px; /* Set a minimum width */
-    margin-bottom: 20px; /* Add some bottom margin */
-}
-
-.question h3 {
-    margin-top: 0; /* Remove default margin for h3 */
-    margin-bottom: 10px; /* Add some bottom margin */
-}
-
-.questionActions {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    padding: 5px;
-
-}
-
-/* Add this to your CreateForm.module.css or a global stylesheet */
 
 .modal {
     position: fixed;
@@ -110,5 +83,23 @@
     font-weight: bold;
     cursor: pointer;
   }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 1200px;
+    
+
+  }
+
+  .smallButton {
+    height: 10%;
+    width: 100px;
+    margin: 10px;
+    
+  }
+
+  
   
 

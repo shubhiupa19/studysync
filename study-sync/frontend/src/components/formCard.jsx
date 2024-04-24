@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -41,9 +42,9 @@ function FormCard({form}) {
 
     return (
     <div className={styles.container}>
-            <img src="https://via.placeholder.com/150" alt="Forme" />
-            <h3>{form.title}</h3>
-            <h4>{form.description}</h4>
+            <img src="https://via.placeholder.com/150" alt="Form" />
+            <Typography sx={{ fontWeight: 'bold', marginTop: '20px'}}>Title: {form.title}</Typography>
+            <Typography sx={{marginTop: '20px', marginBottom: '20px'}}>Description: {form.description}</Typography>
             <div className = {styles.allButtons}>
                 
                 <div className={styles.buttonContainer}>

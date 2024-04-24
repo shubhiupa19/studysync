@@ -1,40 +1,35 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Checkbox, Button, CircularProgress, Typography } from '@mui/material';
 
 function FormDisplay () {
     const { formId } = useParams();
-
     const [formData, setFormData] = useState(null);
-
     const [responses, setResponses] = useState({});
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         try {
             const response = await fetch(`http://localhost:3000/api/responses/create`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     form: formId,
                     respondent: '660b90fe4a1ea9ad879ed40c',
-                    response_array: Object.entries(responses).map(([question, answer]) => ({
-                        question: question,
-                        response: answer
-                      }))
+                    response_array: Object.entries(responses).map(([question, answer]) => ({ question, response: answer }))
                 })
-
             });
 
+            if (response.ok) {
+                navigate('/dashboard');
+
+            }
         } catch (error) {
             console.error(error);
         }
-        
-        
-
-    }
+    };
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/forms/get/${formId}`)
@@ -44,48 +39,32 @@ function FormDisplay () {
     }, [formId]);
 
     if (!formData) {
-        return <div>Loading form...</div>;
+        return <CircularProgress />;
     }
 
     return (
         <div>
-            <h2>{formData.title}</h2>
-            <p>{formData.description}</p>
+            <Typography variant="h4">{formData.title}</Typography>
+            <Typography>{formData.description}</Typography>
             <form onSubmit={handleSubmit}>
                 {formData.questions.map((question, index) => (
-                    <div key = {index}>
-                        <label>{question.questionText}</label>
-                        {question.type === 'text' && <input type = "text" onChange = {(event) => setResponses((prevResponses => ({ ...prevResponses, [question._id]: event.target.value})))}/>}
-                        {question.type === 'radio' && question.options.map((option, index) => (
-                            <div key = {index}>
-                                <input type = "radio" name = {question.questionText} value = {option} />
-                                <label>{option}</label>
-                            </div>
-                        ))}
-                        {question.type === 'checkbox' && question.options.map((option, index) => (
-                            <div key = {index}>
-                                <input type = "checkbox" name = {question.questionText} value = {option} />
-                                <label>{option}</label>
-                            </div>
-                        ))}
-                        {question.type === 'dropdown' && (
-                            <select>
+                    <FormControl key={index} component="fieldset" margin="normal">
+                        <FormLabel component="legend">{question.questionText}</FormLabel>
+                        {question.type === 'text' && <TextField onChange={(event) => setResponses((prevResponses) => ({ ...prevResponses, [question._id]: event.target.value }))} />}
+                        {question.type === 'radio' && (
+                            <RadioGroup>
                                 {question.options.map((option, index) => (
-                                    <option key = {index} value = {option}>{option}</option>
+                                    <FormControlLabel key={index} control={<Radio />} label={option} value={option} onChange={(event) => setResponses((prevResponses) => ({ ...prevResponses, [question._id]: event.target.value }))} />
                                 ))}
-                            </select>
+                            </RadioGroup>
                         )}
-                        {question.type === 'date' && <input type = "date" />}
-                        {question.type === 'time' && <input type = "time" />}
-                        {question.type === 'file' && <input type = "file" />}
-                        {question.type === 'range' && <input type = "range" />}
-                        {question.type === 'email' && <input type = "email" />}
-                        {question.type === 'number' && <input type = "number" />}
-                        {question.type === 'tel' && <input type = "tel" />}
-                        {question.type === 'url' && <input type = "url" />}
-                    </div>
-                    ))}
-                    <button type = "submit">Submit</button>
+                        {question.type === 'checkbox' && question.options.map((option, index) => (
+                            <FormControlLabel key={index} control={<Checkbox />} label={option} onChange={(event) => setResponses((prevResponses) => ({ ...prevResponses, [question._id]: event.target.checked ? option : '' }))} />
+                        ))}
+                        {/* Add other field types similarly using Material UI components */}
+                    </FormControl>
+                ))}
+                <Button type="submit" variant="contained" color="primary">Submit</Button>
             </form>
         </div>
     );
