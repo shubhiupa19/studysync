@@ -1,58 +1,105 @@
 import React from 'react';
-import styles from './PreviewForm.module.css';
+import { Modal, Typography, TextField, Checkbox, Radio, FormControl, Select, MenuItem, Button, Box, Paper, Card, CardContent, CardHeader } from '@mui/material';
 
 const PreviewForm = ({ formDraft, onClose }) => {
   const renderPreviewQuestion = (question) => {
     switch (question.type) {
       case 'text':
-        return <input type="text" placeholder={question.title} disabled />;
+        return <TextField label={question.title || 'Untitled'} disabled />;
       case 'checkbox':
         return question.options.map((option, index) => (
-          <label key={index}>
-            <input type="checkbox" disabled /> {option}
-          </label>
+          <div key={index}>
+            <Checkbox disabled />
+            <Typography variant="body1">{option}</Typography>
+          </div>
         ));
-        case 'radio':
-            return question.options.map((option, index) => (
-                <label key={index}>
-                <input type="radio" disabled /> {option}
-                </label>
-            ));
-        case 'dropdown':
-            return (
-                <select disabled>
-                {question.options.map((option, index) => (
-                    <option key={index}>{option}</option>
-                ))}
-                </select>
-            );
-        case 'time':
-            return <input type="time" disabled />;
-
-        case 'date':
-            return <input type="date" disabled />;
-        
-        
+      case 'radio':
+        return question.options.map((option, index) => (
+          <div key={index}>
+            <Radio disabled />
+            <Typography variant="body1">{option}</Typography>
+          </div>
+        ));
+      case 'dropdown':
+        return (
+          <FormControl disabled>
+            <Select>
+              {question.options.map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        );
+      case 'time':
+        return <TextField type="time" disabled />;
+      case 'date':
+        return <TextField type="date" disabled />;
       default:
         return null;
     }
   };
 
+  const handleModalContentClick = (event) => {
+    event.stopPropagation();
+  };
+
   return (
-    <div className={styles.modalOverlay}>
-    <div className={styles.modalContent}>
-      <h2>{formDraft.title}</h2>
-      <p>{formDraft.description}</p>
-      {formDraft.questions.map((question, index) => (
-        <div key={index}>
-          <h3>{question.title}</h3>
-          {renderPreviewQuestion(question)}
-        </div>
-      ))}
-      <button onClick={onClose} style={{ marginTop: '20px' }}>Close Preview</button>
-    </div>
-  </div>
-);
+    <Modal open={true} onClose={onClose}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+        }}
+        onClick={onClose}
+      >
+        <Paper
+          onClick={handleModalContentClick}
+          sx={{
+            width: '80%',
+            maxWidth: '800px',
+            height: '80%',
+            maxHeight: '800px',
+            backgroundColor: 'background.paper',
+            padding: (theme) => theme.spacing(2, 4, 3),
+            outline: 0,
+            boxShadow: 24,
+            borderRadius: 1,
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h3" sx={{ marginBottom: 2}} >{formDraft.title || 'Untitled'}</Typography>
+          <Typography variant="body1" sx={{ marginBottom: 3}}>{formDraft.description || 'No Description'}</Typography>
+          {formDraft.questions.map((question, index) => (
+            <Card key={index} raised sx={{ width: '65%', marginBottom: 2, display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center', }}>
+            <CardHeader
+              title={<Typography variant="h6">{question.title || 'Untitled'}</Typography>}
+              sx={{ paddingBottom: 2 }}
+            />
+            <CardContent sx={{
+                  paddingTop: 0,
+                  
+                }}>
+              {renderPreviewQuestion(question)}
+            </CardContent>
+          </Card>
+          ))}
+          <Button onClick={onClose} sx={{ marginTop: '20px' }}>
+            Close Preview
+          </Button>
+        </Paper>
+      </Box>
+    </Modal>
+  );
 };
 
 export default PreviewForm;

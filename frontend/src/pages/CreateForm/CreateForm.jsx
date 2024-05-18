@@ -159,35 +159,40 @@
                     
                     case 'dropdown':
                         return (
-                            <div>
-                                <select>
-                                    {question.options.map((option, optionIndex) => (
-                                        <option key={optionIndex} value={option}>
-                                            {option}
-                                        </option>
-                                    ))}
-                                </select>
-                                <div>
-                                    {question.options.map((option, optionIndex) => (
-                                        <div key={optionIndex}>
-                                            <input 
-                                                type="text" 
-                                                value={option} 
-                                                onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)} 
-                                            />
-                                            <button onClick={() => handleRemoveOption(questionIndex, optionIndex)}>
-                                                Remove
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                                <button onClick={() => handleAddOption(questionIndex)}>Add Option</button>
-                            </div>
-                        );
+                            <Box key={questionIndex}>
+                              <FormControl fullWidth>
+                                <Select disabled value="">
+                                  {question.options.map((option, optionIndex) => (
+                                    <MenuItem key={optionIndex} value={option}>
+                                      {option}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                              <Box>
+                                {question.options.map((option, optionIndex) => (
+                                  <Box key={optionIndex} sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>
+                                    <TextField
+                                      type="text"
+                                      value={option}
+                                      onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
+                                      sx={{ marginRight: 1 }}
+                                    />
+                                    <Button variant="contained" color="error" onClick={() => handleRemoveOption(questionIndex, optionIndex)}>
+                                      Remove
+                                    </Button>
+                                  </Box>
+                                ))}
+                              </Box>
+                              <Button variant="contained" color="primary" onClick={() => handleAddOption(questionIndex)} sx={{ marginTop: 1 }}>
+                                Add Option
+                              </Button>
+                            </Box>
+                          );
                     case 'date':
-                        return <input type="date" id={`question-date-${questionIndex}`} />;
+                        return <TextField type="date" id={`question-date-${questionIndex}`} />;
                     case 'time':
-                        return <input type="time" id={`question-time-${questionIndex}`} />;
+                        return <TextField type="time" id={`question-time-${questionIndex}`} />;
                     case 'file':
                         return (
                             <input 
