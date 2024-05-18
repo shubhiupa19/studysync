@@ -14,7 +14,7 @@ function Navbar({create}) {
                     <Link to="/dashboard">Dashboard</Link>
                 </li>
                 <li>
-                    <Link to="/">Account Settings</Link>
+                    <Link to="/settings">Account Settings</Link>
                 </li>
                 <li>
                     <Link to="/login">Logout</Link>

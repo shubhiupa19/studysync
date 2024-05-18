@@ -10,30 +10,38 @@ exports.protect = asyncHandler(async (req, res, next) => {
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     )
-    console.log(req.headers.authorization);
-    {
+        {
+            console.log(req.headers.authorization);
+    
         try {
-            //getting token from header
-            token = req.headers.authorization.split(' ')[1];
+                //getting token from header
+                token = req.headers.authorization.split(' ')[1];
 
-            //verifying token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+                console.log(token);
+                console.log(process.env.JWT_SECRET);
 
-            //get user from token using database and id
-            req.user = await User.findById(decoded.id).select('-password');
+                //verifying token
+                const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            //call next middleware
-            next();
+                //console log that the token is verified
+                console.log("decoded token: ", decoded);
 
-        } catch (error) {
-            //print out the error
-            console.log(error);
-            res.status(401);
-            throw new Error('User not authorized');
+                //get user from token using database and id
+                req.user = await User.findById(decoded.id).select('-password');
+
+                //call next middleware
+                next();
+
+            } catch (error) {
+                //print out the error
+                console.log(error);
+                res.status(401);
+                throw new Error('User not authorized');
+            }
+    
         }
-    }
 
-    if (!token) {
+    else  {
         res.status(401);
         throw new Error('User not authorized, no token');
     }
